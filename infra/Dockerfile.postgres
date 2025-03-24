@@ -1,0 +1,12 @@
+FROM postgres:15.2
+
+# Install postgresql & the postgis extension
+RUN apt-get update && apt-get  install -y postgresql-15-postgis-3  
+
+
+CMD [ "/usr/local/bin/docker-entrypoint.sh","postgres", \
+      "-c", "max_locks_per_transaction=1024", \
+
+      # random_page_cost should be 1.1 for SSD -> default of 4 is for HDD
+      "-c", "random_page_cost=1.1" \
+    ]
