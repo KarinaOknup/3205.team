@@ -86,7 +86,7 @@ routerRedirect.get('/:shortId', validation(redirectSchema), async (req: Request,
             return;
         }
 
-        res.status(404);
+        res.status(404).send();
     } catch (err){
         console.log('ERROR:', err);
         res.status(400).send({message: err.message});
