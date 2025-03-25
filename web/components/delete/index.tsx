@@ -1,6 +1,7 @@
 
 import { useForm } from '@mantine/form';
 import { TextInput, Text, Button } from '@mantine/core';
+import { notifications } from '@mantine/notifications';
 import { useState, FormEvent } from 'react';
 
 export default function Delete() {
@@ -35,10 +36,20 @@ export default function Delete() {
     })
 
     if (response.ok) {
+      notifications.show({
+        color: 'green',
+        title: 'Success',
+        message: `Short url was deleted!`,
+      })
       return;
     }
 
     const result = await response.json();
+    notifications.show({
+      color: 'red',
+      title: 'Error',
+      message: `Something go wrong`,
+    })
 
     setServerIssue(result.message || 'Unexpected error')
   }

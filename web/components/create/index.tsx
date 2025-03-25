@@ -1,6 +1,7 @@
 
 import { useForm } from '@mantine/form';
 import { TextInput, Code, Text, Button} from '@mantine/core';
+import { notifications } from '@mantine/notifications';
 import {nanoid} from 'nanoid'
 import { useEffect, useState, FormEvent } from 'react';
 
@@ -25,7 +26,7 @@ export default function Create() {
 
   useEffect(() => {
     setServerIssue('');
-    setShortUrl(`${process.env.NEXT_PUBLIC_BASE_API_URL}/${form.values.alias.length > 0 ? form.values.alias.replace(/\s/g,'_') : shortId}`)
+    setShortUrl(`${process.env.NEXT_PUBLIC_BASE_API_URL}/${form.values.alias.length > 0 ? form.values.alias.trim().replace(/\s/g,'_') : shortId}`)
   }, [shortId, form.values.alias])
 
 
@@ -46,6 +47,11 @@ export default function Create() {
     })
 
     if (response.ok) {
+      notifications.show({
+        color: 'green',
+        title: 'Success',
+        message: `Short url was created! Check:${shortUrl} 🌟`,
+      })
       navigator.clipboard.writeText(shortUrl);
       setShortId(nanoid());
       form.reset()
@@ -53,6 +59,12 @@ export default function Create() {
       return;
     }
     const result = await response.json();
+
+    notifications.show({
+      color: 'red',
+      title: 'Error',
+      message: `Something go wrong`,
+    })
 
     setServerIssue(result.message || 'Unexpected error')
   }

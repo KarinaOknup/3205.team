@@ -1,6 +1,6 @@
 
 import { useForm } from '@mantine/form';
-import { TextInput, Code, Text, Button, Checkbox, Flex } from '@mantine/core';
+import { TextInput, Code, Text, Button, Flex } from '@mantine/core';
 import { useState, FormEvent, useEffect } from 'react';
 
 export default function Analytics() {
