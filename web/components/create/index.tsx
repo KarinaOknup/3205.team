@@ -2,8 +2,10 @@
 import { useForm } from '@mantine/form';
 import { TextInput, Code, Text, Button} from '@mantine/core';
 import { notifications } from '@mantine/notifications';
+import { DateInput } from '@mantine/dates';
 import {nanoid} from 'nanoid'
 import { useEffect, useState, FormEvent } from 'react';
+import moment from 'moment'
 
 export default function Create() {
   const [shortId, setShortId] = useState(nanoid());
@@ -17,6 +19,7 @@ export default function Create() {
     initialValues: {
       originalUrl: '',
       alias: '',
+      expiresAt: null
     },
     validate: {
       originalUrl: (value:string) => (urlValidateRegEx.test(value) ? null : 'Please check ur url' ),
@@ -37,7 +40,7 @@ export default function Create() {
     if(validateRes.hasErrors){
       return;
     }
-
+    
     const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/api/v1/shorten`, {
       method: 'POST',
       headers: {
@@ -81,6 +84,14 @@ export default function Create() {
             placeholder="tears"
             mt="md"
             {...form.getInputProps('alias')}
+        />
+        <DateInput
+          mt="md"
+          valueFormat="YYYY-MM-DD"
+          minDate={moment().add(1, 'day').toDate()}
+          label="Expires At"
+          placeholder="1543-01-01"
+          {...form.getInputProps('expiresAt')}
         />
 
         <Text size="sm" mt="xl">

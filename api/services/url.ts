@@ -14,7 +14,7 @@ async function create(data: CreateParams) {
             where: {
                 alias: data.alias.replace(/\s/g,'_'),
                 expiresAt:{
-                    gte: new Date()
+                    gte: new Date().toISOString()
                 },
                 isDeleted: false
             },
@@ -34,7 +34,7 @@ async function create(data: CreateParams) {
             originalUrl: data.originalUrl,
             shortUrl,
             alias: data.alias,
-            expiresAt: data.expiresAt || new Date('3000-01-01'),
+            expiresAt: new Date(data.expiresAt) || new Date('3000-01-01'),
         }
     });
 
