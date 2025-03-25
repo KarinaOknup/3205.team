@@ -45,7 +45,6 @@ router.post('/shorten', validation(createSchema), async (req: Request, res: Resp
 router.get(`/info/:shortId`, validation(getInfoSchema),  async (req: Request, res: Response) => {
     try {
         const info = await urlService.getInfo(req.ctx.validatedData);
-        console.log(info)
         res.status(200).send(info);
     } catch (err) {
         console.log('ERROR:', err);
@@ -54,7 +53,6 @@ router.get(`/info/:shortId`, validation(getInfoSchema),  async (req: Request, re
 })
 
 router.delete('/:shortId', validation(deleteSchema), async (req: Request, res: Response) => {
-    console.log(req.ctx.validatedData)
     try {
         await urlService.deleteUrl(req.ctx.validatedData);
         res.status(200).send();

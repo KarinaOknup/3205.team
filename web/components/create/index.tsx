@@ -25,7 +25,7 @@ export default function Create() {
 
   useEffect(() => {
     setServerIssue('');
-    setShortUrl(`http://localhost:8100/${form.values.alias.length > 0 ? form.values.alias.replace(/\s/g,'_') : shortId}`)
+    setShortUrl(`${process.env.NEXT_PUBLIC_BASE_API_URL}/${form.values.alias.length > 0 ? form.values.alias.replace(/\s/g,'_') : shortId}`)
   }, [shortId, form.values.alias])
 
 
@@ -37,7 +37,7 @@ export default function Create() {
       return;
     }
 
-    const response = await fetch('http://localhost:8100/api/v1/shorten', {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/api/v1/shorten`, {
       method: 'POST',
       headers: {
         "Content-Type": "application/json",

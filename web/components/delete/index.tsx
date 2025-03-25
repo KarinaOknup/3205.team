@@ -27,7 +27,7 @@ export default function Delete() {
 
     const shortId = form.values.shortUrl.split('/').filter(Boolean).pop()
 
-    const response = await fetch(`http://localhost:8100/api/v1/${shortId}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/api/v1/${shortId}`, {
       method: 'DELETE',
       headers: {
         "Content-Type": "application/json",

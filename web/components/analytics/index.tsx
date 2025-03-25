@@ -38,7 +38,7 @@ export default function Analytics() {
       infoLink = 'analytics'
     }
 
-    const response = await fetch(`http://localhost:8100/api/v1/${infoLink}/${shortId}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/api/v1/${infoLink}/${shortId}`, {
       method: 'GET',
       headers: {
         "Content-Type": "application/json",

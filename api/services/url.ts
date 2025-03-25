@@ -1,7 +1,7 @@
 import db from '../db'
 import { CreateParams, RedirectParams, ShortIdParams } from '../types'
 
-const BASE_URL = 'http://localhost:8100'
+const BASE_URL = process.env.BASE_API_URL
 
 function createShortUrl(shortId){
     return `${BASE_URL}/${shortId}`;
