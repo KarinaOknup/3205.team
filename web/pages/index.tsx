@@ -3,6 +3,7 @@ import { Text, Box, Center, Flex, Tabs } from '@mantine/core';
 import {
   CreateForm,
   DeleteForm,
+  InfoForm,
   AnalyticsForm,
   CustomTabs
 } from '../components'
@@ -17,6 +18,7 @@ export default function Home() {
             <Tabs.List>
               <Tabs.Tab value="create">Create</Tabs.Tab>
               <Tabs.Tab value="delete">Delete</Tabs.Tab>
+              <Tabs.Tab value="info">Info</Tabs.Tab>
               <Tabs.Tab value="analytics">Analytics</Tabs.Tab>
             </Tabs.List>
             <Tabs.Panel value="create" pt="xs">
@@ -24,6 +26,9 @@ export default function Home() {
             </Tabs.Panel>
             <Tabs.Panel value="delete" pt="xs">
               <DeleteForm/>
+            </Tabs.Panel>
+            <Tabs.Panel value="info" pt="xs">
+              <InfoForm/>
             </Tabs.Panel>
             <Tabs.Panel value="analytics" pt="xs">
               <AnalyticsForm/>

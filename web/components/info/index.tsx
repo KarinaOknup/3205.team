@@ -3,7 +3,7 @@ import { useForm } from '@mantine/form';
 import { TextInput, Code, Text, Button, Checkbox, Flex } from '@mantine/core';
 import { useState, FormEvent, useEffect } from 'react';
 
-export default function Analytics() {
+export default function Info() {
   const urlValidateRegEx = /^http:\/\/localhost:8100\/[^\/\\]+$/;
   const [serverIssue, setServerIssue] = useState('');
   const [info, setInfo] = useState('');
@@ -32,7 +32,7 @@ export default function Analytics() {
 
     const shortId = form.values.shortUrl.split('/').filter(Boolean).pop();
 
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/api/v1/analytics/${shortId}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/api/v1/info/${shortId}`, {
       method: 'GET',
       headers: {
         "Content-Type": "application/json",
