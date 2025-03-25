@@ -4,8 +4,21 @@ import { TextInput, Code, Text, Button} from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 import { DateInput } from '@mantine/dates';
 import {nanoid} from 'nanoid'
-import { useEffect, useState, FormEvent } from 'react';
+import { useEffect, useState, FormEvent } from 'react'
 import moment from 'moment'
+
+type ObjectType = {[index: string]: string | null | ObjectType }
+function removeEmpty(obj:ObjectType) {
+  const newObj:ObjectType = {};
+  Object.entries(obj).forEach(([k, v]) => {
+    if (v === Object(v)) {
+      newObj[k] = removeEmpty(v as ObjectType);
+    } else if (v != null) {
+      newObj[k] = obj[k];
+    }
+  });
+  return newObj;
+}
 
 export default function Create() {
   const [shortId, setShortId] = useState(nanoid());
@@ -40,13 +53,13 @@ export default function Create() {
     if(validateRes.hasErrors){
       return;
     }
-    
+
     const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/api/v1/shorten`, {
       method: 'POST',
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({...form.values, shortId: shortId}),
+      body: JSON.stringify(removeEmpty({...form.values, shortId: shortId})),
     })
 
     if (response.ok) {

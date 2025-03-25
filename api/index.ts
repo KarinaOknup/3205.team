@@ -19,7 +19,7 @@ const app: Express = express();
 const port = 8100;
 
 const corsOptions = {
-    origin : ['http://localhost:3000'],
+    origin: '*',
  }
 
 app.use(cors(corsOptions))

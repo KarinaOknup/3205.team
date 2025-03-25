@@ -9,10 +9,19 @@ function createShortUrl(shortId){
 
 async function create(data: CreateParams) {
     let shortUrl = createShortUrl(data.shortId);
-    if (data.alias && data.alias.length > 0) {
+    const alias = data.alias ? data.alias.replace(/\s/g,'_') : undefined;
+    if (alias && alias.length > 0) {
         const isExist = await db.url.findFirst({
             where: {
-                alias: data.alias.replace(/\s/g,'_'),
+                OR: [
+                    {
+                        alias,
+                    },
+                    { 
+                        shortUrl,
+                    }
+                  ],
+
                 expiresAt:{
                     gte: new Date().toISOString()
                 },
@@ -33,8 +42,8 @@ async function create(data: CreateParams) {
         data: {
             originalUrl: data.originalUrl,
             shortUrl,
-            alias: data.alias,
-            expiresAt: new Date(data.expiresAt) || new Date('3000-01-01'),
+            alias,
+            expiresAt: data.expiresAt ? new Date(data.expiresAt) : new Date('3000-01-01'),
         }
     });
 
