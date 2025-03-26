@@ -93,12 +93,15 @@ async function getInfo(data:ShortIdParams) {
             id: true
         }
     })
+    let count = 0;
 
-    const count = await db.redirect.count({
-        where:{
-            urlId: url.id
-        }
-    })
+    if(url){
+        count = await db.redirect.count({
+            where:{
+                urlId: url.id
+            }
+        })
+    }
 
     return {
         originalUrl: url?.originalUrl,

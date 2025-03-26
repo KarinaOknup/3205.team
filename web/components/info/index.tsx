@@ -94,7 +94,18 @@ export default function Info() {
                 marginTop: rem(10)
               })}>
               <Text fw={500}>Original URL:</Text>
-              <Badge w={"fit-content"} >{info.originalUrl}</Badge>
+              <Text size={15} c="dimmed">* you can copy the original URL by clicking on it</Text>
+              <Badge
+                onClick={() => navigator.clipboard.writeText(info.originalUrl)}
+                sx={() => ({
+                  whiteSpace: 'nowrap',
+                  width: '100%',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  cursor:'copy'
+                })}>
+                  {info.originalUrl}
+              </Badge>
             </Box>
           </Flex>
         }
