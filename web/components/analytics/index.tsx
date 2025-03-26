@@ -2,9 +2,13 @@
 import { useForm } from '@mantine/form';
 import { TextInput, Badge, Text, Button, Flex, Box, rem } from '@mantine/core';
 import { useState, FormEvent, useEffect } from 'react';
+import { useMediaQuery } from '@mantine/hooks';
+
 import { nanoid } from 'nanoid';
 
 export default function Analytics() {
+    const isMobileLayout = useMediaQuery('(max-width: 37.5em)');
+  
   const urlValidateRegEx = /^http:\/\/localhost:8100\/[^\/\\]+$/;
   const [serverIssue, setServerIssue] = useState('');
   const [info, setInfo] = useState<{count: number, userIps: string[]} | null>(null);
@@ -52,7 +56,7 @@ export default function Analytics() {
     setServerIssue(result.message || 'Unexpected error')
   }
   return (
-    <Flex direction={"column"}>
+    <Flex direction={"column"} maw={isMobileLayout ? 300 : 600}>
         <Text c="dimmed" mb={10}>Analytics provides data for all redirects associated with this link, including expired and deleted links with the same alias.</Text>
         <form onSubmit={onSubmit}>
             <TextInput

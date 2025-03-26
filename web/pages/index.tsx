@@ -1,5 +1,7 @@
 
 import { Text, Box, Center, Flex, Tabs } from '@mantine/core';
+import { useMediaQuery } from '@mantine/hooks';
+
 import {
   CreateForm,
   DeleteForm,
@@ -9,11 +11,12 @@ import {
 } from '../components'
 
 export default function Home() {
+  const isMobileLayout = useMediaQuery('(max-width: 37.5em)');
   return (
     <Center mt={100}>
       <Flex align={'center'} direction={"column"}>
         <Text size={40} my={40}>SHORT UR URL</Text>
-        <Box w={600}>
+        <Box miw={isMobileLayout ? 300 : 600}>
           <CustomTabs defaultValue="create">
             <Tabs.List>
               <Tabs.Tab value="create">Create</Tabs.Tab>

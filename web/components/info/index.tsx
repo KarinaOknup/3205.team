@@ -2,9 +2,12 @@
 import { useForm } from '@mantine/form';
 import { TextInput, Text, Button, Flex, Badge, Box, rem } from '@mantine/core';
 import { useState, FormEvent, useEffect } from 'react';
+import { useMediaQuery } from '@mantine/hooks';
+
 import moment from 'moment';
 
 export default function Info() {
+    const isMobileLayout = useMediaQuery('(max-width: 37.5em)');
   const urlValidateRegEx = /^http:\/\/localhost:8100\/[^\/\\]+$/;
   const [serverIssue, setServerIssue] = useState('');
   const [info, setInfo] = useState<{ originalUrl: string, createdAt: string, clickCount: number} | null>(null);
@@ -52,7 +55,7 @@ export default function Info() {
     setServerIssue(result.message || 'Unexpected error')
   }
   return (
-    <Flex direction={"column"}>
+    <Flex direction={"column"} maw={isMobileLayout ? 300 : 600}>
         <Text c="dimmed" mb={10}>Info provides details for existing, non-expired short URLs.</Text>
         <form onSubmit={onSubmit}>
             <TextInput
@@ -91,7 +94,7 @@ export default function Info() {
                 backgroundColor: theme.colors.gray[0],
                 borderRadius: theme.radius.md,
                 padding: rem(10),
-                marginTop: rem(10)
+                marginTop: rem(10),
               })}>
               <Text fw={500}>Original URL:</Text>
               <Text size={15} c="dimmed">* you can copy the original URL by clicking on it</Text>
