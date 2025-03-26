@@ -126,19 +126,16 @@ async function getAnalytics(data:ShortIdParams) {
             shortUrl: createShortUrl(data.shortId),
         }
     })
-    const userIps = await db.redirect.findMany({
-        where:{
+    const userIps = await db.redirect.groupBy({
+        by: ['userIp'],
+        where: {
             shortUrl: createShortUrl(data.shortId),
         },
-        select:{
-            userIp: true
+        orderBy: {
+            _max: { createdAt: 'desc' }
         },
-        orderBy:{
-            createdAt: 'desc'
-        },
-        
-        take: 5,
-    })
+        take: 5 
+    });
 
     return {
         count,
