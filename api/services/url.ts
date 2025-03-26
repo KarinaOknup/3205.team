@@ -94,20 +94,16 @@ async function getInfo(data:ShortIdParams) {
         }
     })
 
-    if (url) {
-        const count = await db.redirect.count({
-            where:{
-                urlId: url.id
-            }
-        })
-
-        return {
-            originalUrl: url.originalUrl,
-            createdAt: url.createdAt,
-            clickCount: count,
+    const count = await db.redirect.count({
+        where:{
+            urlId: url.id
         }
-    } else {
-        return {status: `Active short url ${createShortUrl(data.shortId)} doesnt exists`}
+    })
+
+    return {
+        originalUrl: url?.originalUrl,
+        createdAt: url?.createdAt,
+        clickCount: count,
     }
 }
 

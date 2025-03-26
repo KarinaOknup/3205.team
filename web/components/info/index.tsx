@@ -1,12 +1,13 @@
 
 import { useForm } from '@mantine/form';
-import { TextInput, Code, Text, Button, Flex } from '@mantine/core';
+import { TextInput, Text, Button, Flex, Badge, Box, rem } from '@mantine/core';
 import { useState, FormEvent, useEffect } from 'react';
+import moment from 'moment';
 
 export default function Info() {
   const urlValidateRegEx = /^http:\/\/localhost:8100\/[^\/\\]+$/;
   const [serverIssue, setServerIssue] = useState('');
-  const [info, setInfo] = useState('');
+  const [info, setInfo] = useState<{ originalUrl: string, createdAt: string, clickCount: number} | null>(null);
 
   const form = useForm({
     validateInputOnBlur: true,
@@ -19,7 +20,7 @@ export default function Info() {
   });
 
   useEffect(()=>{
-    setInfo('')
+    setInfo(null)
   },[form.values.shortUrl])
   
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
@@ -42,7 +43,7 @@ export default function Info() {
     if (response.ok) {
       const info = await response.json();
 
-      setInfo(JSON.stringify(info))
+      setInfo(info)
       return;
     }
 
@@ -52,6 +53,7 @@ export default function Info() {
   }
   return (
     <Flex direction={"column"}>
+        <Text c="dimmed" mb={10}>Info provides details for existing, non-expired short URLs.</Text>
         <form onSubmit={onSubmit}>
             <TextInput
                 label="Short URL"
@@ -67,10 +69,34 @@ export default function Info() {
                 Get info
             </Button>
         </form>
-        {!!info.length && 
-          <Code mt={20}>
-            {info}
-          </Code>
+        { info && !info.originalUrl && <Badge mt={10} color='red'>The active short URL {form.values.shortUrl} does not exist.</Badge>}
+        {!!info?.originalUrl &&
+          <Flex
+            mt={20}
+            direction={"column"}
+          >
+            <Badge w={"fit-content"} >{info.clickCount} redirects</Badge>
+            <Box 
+              sx={(theme) => ({
+                backgroundColor: theme.colors.gray[0],
+                borderRadius: theme.radius.md,
+                padding: rem(10),
+                marginTop: rem(10)
+              })}>
+              <Text fw={500}>Created At:</Text>
+              <Badge w={"fit-content"} >{moment(info.createdAt).format('MMM DD, YYYY HH:MM')}</Badge>
+            </Box>
+            <Box 
+              sx={(theme) => ({
+                backgroundColor: theme.colors.gray[0],
+                borderRadius: theme.radius.md,
+                padding: rem(10),
+                marginTop: rem(10)
+              })}>
+              <Text fw={500}>Original URL:</Text>
+              <Badge w={"fit-content"} >{info.originalUrl}</Badge>
+            </Box>
+          </Flex>
         }
     </Flex>
   );

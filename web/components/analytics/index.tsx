@@ -1,12 +1,13 @@
 
 import { useForm } from '@mantine/form';
-import { TextInput, Code, Text, Button, Flex } from '@mantine/core';
+import { TextInput, Badge, Text, Button, Flex, Box, rem } from '@mantine/core';
 import { useState, FormEvent, useEffect } from 'react';
+import { nanoid } from 'nanoid';
 
 export default function Analytics() {
   const urlValidateRegEx = /^http:\/\/localhost:8100\/[^\/\\]+$/;
   const [serverIssue, setServerIssue] = useState('');
-  const [info, setInfo] = useState('');
+  const [info, setInfo] = useState<{count: number, userIps: string[]} | null>(null);
 
   const form = useForm({
     validateInputOnBlur: true,
@@ -19,7 +20,7 @@ export default function Analytics() {
   });
 
   useEffect(()=>{
-    setInfo('')
+    setInfo(null)
   },[form.values.shortUrl])
   
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
@@ -42,7 +43,7 @@ export default function Analytics() {
     if (response.ok) {
       const info = await response.json();
 
-      setInfo(JSON.stringify(info))
+      setInfo(info)
       return;
     }
 
@@ -52,6 +53,7 @@ export default function Analytics() {
   }
   return (
     <Flex direction={"column"}>
+        <Text c="dimmed" mb={10}>Analytics provides data for all redirects associated with this link, including expired and deleted links with the same alias.</Text>
         <form onSubmit={onSubmit}>
             <TextInput
                 label="Short URL"
@@ -67,10 +69,31 @@ export default function Analytics() {
                 Get info
             </Button>
         </form>
-        {!!info.length && 
-          <Code mt={20}>
-            {info}
-          </Code>
+        {!!info &&
+          <Flex
+            mt={20}
+            direction={"column"}
+          >
+            <Badge w={"fit-content"} >{info.count} redirects</Badge>
+            {
+              info.userIps.length > 0 &&
+              <Box 
+                sx={(theme) => ({
+                  backgroundColor: theme.colors.gray[0],
+                  borderRadius: theme.radius.md,
+                  padding: rem(20),
+                  marginTop: rem(10)
+                })}
+              >
+                <Text mb={10} fw={500}>Last users IPs: </Text>
+                <Flex direction={"column"}>
+                  {
+                    info.userIps.map(ip => <Badge my={10} w={"fit-content"} color="indigo" key={nanoid()}>{ip}</Badge>)
+                  }
+                </Flex>
+              </Box>
+            }
+          </Flex>
         }
     </Flex>
   );
