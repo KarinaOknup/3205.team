@@ -42,7 +42,9 @@ export default function Create() {
 
   useEffect(() => {
     setServerIssue('');
-    setShortUrl(`${process.env.NEXT_PUBLIC_BASE_API_URL}/${form.values.alias.length > 0 ? form.values.alias.trim().replace(/\s/g,'_') : shortId}`)
+    const alias = form.values.alias;
+    const shortUrlEnd = `${alias.length > 0 ? alias.trim().replace(/[\/|\\&\? ]/g,'_') : shortId}`;
+    setShortUrl(`${process.env.NEXT_PUBLIC_BASE_API_URL}/${shortUrlEnd}`)
   }, [shortId, form.values.alias])
 
 

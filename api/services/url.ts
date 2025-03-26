@@ -9,7 +9,7 @@ function createShortUrl(shortId){
 
 async function create(data: CreateParams) {
     let shortUrl = createShortUrl(data.shortId);
-    const alias = data.alias ? data.alias.replace(/\s/g,'_') : undefined;
+    const alias = data.alias ? data.alias.replace(/[\/|\\&\? ]/g,'_') : undefined;
     if (alias && alias.length > 0) {
         const isExist = await db.url.findFirst({
             where: {

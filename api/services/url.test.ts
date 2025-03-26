@@ -6,7 +6,7 @@ describe('URL server test', () => {
     let alias;
 
     beforeAll(() => {
-        alias = nanoid();
+        alias = `${nanoid()}_test`;
     });
 
     async function create() {
