@@ -66,13 +66,29 @@ async function getOriginalUrl(data: RedirectParams) {
     })
 
     if (url){
-        await db.redirect.create({
-            data:{
+        const lastRedirect = await db.redirect.findFirst({
+            select:{
+                createdAt: true
+            },
+            where:{
                 urlId: url.id,
-                shortUrl: createShortUrl(data.shortId),
                 userIp: data.userIp
+            },
+            orderBy: {
+                createdAt: 'desc'
             }
         })
+
+        // to escape duplicates 
+        if(!lastRedirect || (new Date().getTime() - lastRedirect.createdAt.getTime())/1000 > 3){
+            await db.redirect.create({
+                data:{
+                    urlId: url.id,
+                    shortUrl: createShortUrl(data.shortId),
+                    userIp: data.userIp
+                }
+            })
+        }
     }
 
     return url?.originalUrl || null;

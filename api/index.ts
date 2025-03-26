@@ -2,6 +2,7 @@ import express, { Express, Response, NextFunction} from 'express';
 import requestIp from 'request-ip'
 import bodyParser from 'body-parser'
 import cors from 'cors'
+import morgan from 'morgan'
 
 import { Request } from './types'
 import urlService from './services/url'
@@ -21,6 +22,8 @@ const port = 8100;
 const corsOptions = {
     origin: '*',
  }
+
+app.use(morgan('dev'));
 
 app.use(cors(corsOptions))
 app.use(bodyParser.json({ limit: '50mb' }));
